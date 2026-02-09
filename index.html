@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colecție Privată</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Colecție Privată</h1>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Acasă</a></li>
+                <li><a href="#gallery" class="nav-link">Galerie</a></li>
+                <li><a href="#video" class="nav-link">Moment</a></li>
+                <li><a href="#message" class="nav-link">Cuvinte</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Esență</h1>
+            <p class="hero-subtitle">O selecție dedicată celor ce contează</p>
+            <button class="btn-start" onclick="smoothScroll('gallery')">Explorează</button>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section id="gallery" class="gallery-section">
+        <h2 class="section-title">Galerie</h2>
+        <div class="gallery-container">
+            <div class="gallery-item">
+                <img src="imagini/113c6715-6ed3-497e-b6a5-60b370a19b79.jfif" alt="Poza 1">
+                <div class="gallery-overlay">
+                    <p>01</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/1e8f8b0e-222d-4d9c-acb0-e2fd98167bac.jfif" alt="Poza 2">
+                <div class="gallery-overlay">
+                    <p>02</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/496e3ebd-b91b-483d-a2b4-eb36efe4f33b.jfif" alt="Poza 3">
+                <div class="gallery-overlay">
+                    <p>03</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/550bd5a2-1986-4e2c-b8b3-61f5a634b4fd.jfif" alt="Poza 4">
+                <div class="gallery-overlay">
+                    <p>04</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/5794cdc2-b6df-4afd-8dc4-e01d978ca159.jfif" alt="Poza 5">
+                <div class="gallery-overlay">
+                    <p>05</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/64e08337-03ff-44a9-8dfa-da7a81048256.jfif" alt="Poza 6">
+                <div class="gallery-overlay">
+                    <p>06</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="video" class="video-section">
+        <h2 class="section-title">Cadru Cinematic</h2>
+        <div class="video-container">
+            <video width="100%" height="500" controls style="border-radius: 8px;">
+                <source src="videouri/1e1d7092-4813-486c-9e5e-02d90ad17233.mp4" type="video/mp4">
+                Browser-ul tău nu suportă tag-ul video.
+            </video>
+        </div>
+    </section>
+
+    <!-- Message Section -->
+    <section id="message" class="message-section">
+        <h2 class="section-title">Cuvinte</h2>
+        <div class="message-box">
+            <p class="love-message">
+                "Ți-am dedicat această colecție pentru că unele lucruri merită să fie ținute în memorie. 
+                Fiecare moment cu tine e un detaliu pe care nu vreau să-l uit niciodată."
+            </p>
+            <p class="signature">— Cu admirație</p>
+        </div>
+
+        <div class="quotes-container">
+            <div class="quote-card">
+                <p class="quote-text">Eleganță în simplitate</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">Momente atemporale</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">Esență pură</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Colecție privată — Dedicată ție</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
