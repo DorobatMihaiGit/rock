@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colecție Privată</title>
+    <title>Rock - Cea mai dulce comoară 🐾</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Background -->
     <div class="background">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
+        <div class="paw-print paw-1">🐾</div>
+        <div class="paw-print paw-2">🐾</div>
+        <div class="paw-print paw-3">🐾</div>
+        <div class="paw-print paw-4">🐾</div>
+        <div class="paw-print paw-5">🐾</div>
     </div>
 
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <h1 class="logo">Colecție Privată</h1>
+            <h1 class="logo">🐾 Rock</h1>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Acasă</a></li>
+                <li><a href="#about" class="nav-link">Despre</a></li>
                 <li><a href="#gallery" class="nav-link">Galerie</a></li>
-                <li><a href="#video" class="nav-link">Moment</a></li>
-                <li><a href="#message" class="nav-link">Cuvinte</a></li>
+                <li><a href="#video" class="nav-link">Video</a></li>
+                <li><a href="#message" class="nav-link">Mesaj</a></li>
             </ul>
         </div>
     </nav>
@@ -30,50 +33,103 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Esență</h1>
-            <p class="hero-subtitle">O selecție dedicată celor ce contează</p>
-            <button class="btn-start" onclick="smoothScroll('gallery')">Explorează</button>
+            <div class="hero-emoji">🐾</div>
+            <h1 class="hero-title">Cunoaște-l pe Rock</h1>
+            <p class="hero-subtitle">Cel mai adorabil membru al familiei noastre</p>
+            <button class="btn-start" onclick="smoothScroll('about')">Descoperă-l 💕</button>
+        </div>
+    </section>
+
+    <!-- About Rock Section -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <h2 class="section-title">Cine este Rock?</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <div class="card-icon">✨</div>
+                    <h3>Personalitate</h3>
+                    <p>Plin de energie, jucăuș și mereu gata de aventură</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">💕</div>
+                    <h3>Iubitor</h3>
+                    <p>Face fiecare zi mai frumoasă cu prezența lui</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">🌟</div>
+                    <h3>Special</h3>
+                    <p>O parte importantă din viața noastră</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Photo Gallery -->
     <section id="gallery" class="gallery-section">
-        <h2 class="section-title">Galerie</h2>
+        <h2 class="section-title">Momentele lui Rock 📸</h2>
+        <p class="section-subtitle">O colecție de amintiri adorabile</p>
         <div class="gallery-container">
             <div class="gallery-item">
-                <img src="imagini/113c6715-6ed3-497e-b6a5-60b370a19b79.jfif" alt="Poza 1">
-                <div class="gallery-overlay">
-                    <p>01</p>
+                <img src="imagini/113c6715-6ed3-497e-b6a5-60b370a19b79.jfif" alt="Rock - Moment 1">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">🐾</span>
+                    <span class="caption-text">Moment adorabil</span>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="imagini/1e8f8b0e-222d-4d9c-acb0-e2fd98167bac.jfif" alt="Poza 2">
-                <div class="gallery-overlay">
-                    <p>02</p>
+                <img src="imagini/1e8f8b0e-222d-4d9c-acb0-e2fd98167bac.jfif" alt="Rock - Moment 2">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">✨</span>
+                    <span class="caption-text">Plin de energie</span>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="imagini/496e3ebd-b91b-483d-a2b4-eb36efe4f33b.jfif" alt="Poza 3">
-                <div class="gallery-overlay">
-                    <p>03</p>
+                <img src="imagini/496e3ebd-b91b-483d-a2b4-eb36efe4f33b.jfif" alt="Rock - Moment 3">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">💕</span>
+                    <span class="caption-text">Dragalașenie</span>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="imagini/550bd5a2-1986-4e2c-b8b3-61f5a634b4fd.jfif" alt="Poza 4">
-                <div class="gallery-overlay">
-                    <p>04</p>
+                <img src="imagini/550bd5a2-1986-4e2c-b8b3-61f5a634b4fd.jfif" alt="Rock - Moment 4">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">🌟</span>
+                    <span class="caption-text">Stea luminoasă</span>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="imagini/5794cdc2-b6df-4afd-8dc4-e01d978ca159.jfif" alt="Poza 5">
-                <div class="gallery-overlay">
-                    <p>05</p>
+                <img src="imagini/5794cdc2-b6df-4afd-8dc4-e01d978ca159.jfif" alt="Rock - Moment 5">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">🎉</span>
+                    <span class="caption-text">Mereu vesel</span>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="imagini/64e08337-03ff-44a9-8dfa-da7a81048256.jfif" alt="Poza 6">
-                <div class="gallery-overlay">
-                    <p>06</p>
+                <img src="imagini/64e08337-03ff-44a9-8dfa-da7a81048256.jfif" alt="Rock - Moment 6">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">💖</span>
+                    <span class="caption-text">Iubit mereu</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/7fafc64d-4bba-4280-853a-427450e490d2.jfif" alt="Rock - Moment 7">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">🌈</span>
+                    <span class="caption-text">Bucurie pură</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/80e7268c-fd93-4f75-8876-f2de03619c80.jfif" alt="Rock - Moment 8">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">🎈</span>
+                    <span class="caption-text">Întotdeauna jucăuș</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagini/ab0ef4e9-2b39-4285-8a1d-952947a9fe23.jfif" alt="Rock - Moment 9">
+                <div class="gallery-caption">
+                    <span class="caption-emoji">⭐</span>
+                    <span class="caption-text">Cel mai frumos</span>
                 </div>
             </div>
         </div>
@@ -81,9 +137,10 @@
 
     <!-- Video Section -->
     <section id="video" class="video-section">
-        <h2 class="section-title">Cadru Cinematic</h2>
+        <h2 class="section-title">Rock în Acțiune 🎬</h2>
+        <p class="section-subtitle">Cele mai drăgălașe clipuri</p>
         <div class="video-container">
-            <video width="100%" height="500" controls style="border-radius: 8px;">
+            <video width="100%" controls>
                 <source src="videouri/1e1d7092-4813-486c-9e5e-02d90ad17233.mp4" type="video/mp4">
                 Browser-ul tău nu suportă tag-ul video.
             </video>
@@ -92,31 +149,54 @@
 
     <!-- Message Section -->
     <section id="message" class="message-section">
-        <h2 class="section-title">Cuvinte</h2>
-        <div class="message-box">
-            <p class="love-message">
-                "Ți-am dedicat această colecție pentru că unele lucruri merită să fie ținute în memorie. 
-                Fiecare moment cu tine e un detaliu pe care nu vreau să-l uit niciodată."
-            </p>
-            <p class="signature">— Cu admirație</p>
-        </div>
+        <div class="message-container">
+            <h2 class="section-title">Un Cadou Pentru Tine 💝</h2>
+            <div class="message-box">
+                <div class="heart-decoration">💕</div>
+                <p class="love-message">
+                    Dragă iubita mea,
+                    <br><br>
+                    Am creat această pagină specială ca să-ți arăt cât de mult înseamnă Rock pentru noi. 
+                    Fiecare fotografie, fiecare clipă surprinsă aici e o amintire pe care vreau să o păstrăm împreună.
+                    <br><br>
+                    Rock e mai mult decât un animal de companie - e o parte din familia noastră, 
+                    din poveștile noastre și din fericirea pe care o împărțim zilnic.
+                    <br><br>
+                    Pentru tine, cu toată dragostea mea.
+                </p>
+                <p class="signature">— Al tău, mereu 💕</p>
+            </div>
 
-        <div class="quotes-container">
-            <div class="quote-card">
-                <p class="quote-text">Eleganță în simplitate</p>
-            </div>
-            <div class="quote-card">
-                <p class="quote-text">Momente atemporale</p>
-            </div>
-            <div class="quote-card">
-                <p class="quote-text">Esență pură</p>
+            <div class="fun-facts">
+                <h3 class="facts-title">Lucruri Drăguțe Despre Rock 🐾</h3>
+                <div class="facts-grid">
+                    <div class="fact-item">
+                        <div class="fact-emoji">😊</div>
+                        <p>Face zilele mai frumoase</p>
+                    </div>
+                    <div class="fact-item">
+                        <div class="fact-emoji">🎾</div>
+                        <p>Iubește să se joace</p>
+                    </div>
+                    <div class="fact-item">
+                        <div class="fact-emoji">😴</div>
+                        <p>Expert în puf somnoroase</p>
+                    </div>
+                    <div class="fact-item">
+                        <div class="fact-emoji">🥰</div>
+                        <p>Cea mai dragă comoară</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Colecție privată — Dedicată ție</p>
+        <div class="footer-content">
+            <p class="footer-text">🐾 Rock - Mereu în inimile noastre 💕</p>
+            <p class="footer-subtext">Un cadou de dragoste pentru tine</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
