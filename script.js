@@ -6,6 +6,11 @@ function smoothScroll(elementId) {
     }
 }
 
+// Toggle envelope open/close
+function toggleEnvelope(item) {
+    item.classList.toggle('opened');
+}
+
 // Add animation to elements when they appear on screen
 const observerOptions = {
     threshold: 0.1,
@@ -95,11 +100,15 @@ window.addEventListener('scroll', () => {
 // Add hover effect to gallery items
 document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('mouseenter', function() {
-        this.style.zIndex = '10';
+        if (!this.classList.contains('opened')) {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        }
     });
     
     item.addEventListener('mouseleave', function() {
-        this.style.zIndex = '1';
+        if (!this.classList.contains('opened')) {
+            this.style.transform = '';
+        }
     });
 });
 

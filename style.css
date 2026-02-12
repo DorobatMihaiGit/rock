@@ -274,11 +274,105 @@ body {
 .gallery-item {
     position: relative;
     border-radius: 20px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: var(--shadow-soft);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     aspect-ratio: 1;
+}
+
+.gallery-item:hover:not(.opened) {
+    box-shadow: var(--shadow-hover);
+}
+
+.gallery-item.opened {
+    box-shadow: 0 20px 60px rgba(255, 106, 136, 0.35);
+}
+
+/* ============ ENVELOPE ANIMATION ============ */
+.envelope {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #fff5f9 0%, #ffe8f2 100%);
+    border-radius: 20px;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(135deg, #ffe0ed 0%, #ffd1e5 100%);
+    border-radius: 20px 20px 0 0;
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 106, 136, 0.2);
+    z-index: 12;
+}
+
+.envelope-flap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid #ffc1d9;
+    filter: drop-shadow(0 2px 8px rgba(255, 106, 136, 0.15));
+}
+
+.envelope-heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    z-index: 15;
+    transition: all 0.6s ease;
+    text-shadow: 0 4px 10px rgba(255, 106, 136, 0.3);
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* ============ ENVELOPE OPENED STATE ============ */
+.gallery-item.opened .envelope-flap {
+    transform: rotateX(-180deg);
+}
+
+.gallery-item.opened .envelope-body {
+    transform: translateY(120%);
+}
+
+.gallery-item.opened .envelope-heart {
+    opacity: 0;
+    transform: translate(-50%, -200%) scale(0.3);
+}
+
+.gallery-item.opened img {
+    filter: brightness(1);
+    opacity: 1;
 }
 
 .gallery-item:hover {
@@ -290,11 +384,19 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, filter 0.3s ease, opacity 0.3s ease;
+    filter: brightness(0.7);
+    opacity: 0.3;
+    border-radius: 20px;
 }
 
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
+}
+
+.gallery-item.opened img {
+    filter: brightness(1);
+    opacity: 1;
 }
 
 .gallery-caption {
@@ -302,29 +404,31 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(255, 106, 136, 0.95), transparent);
+    background: linear-gradient(to top, rgba(255, 140, 180, 0.92) 0%, rgba(255, 180, 210, 0.75) 40%, transparent 100%);
     color: white;
-    padding: 2.5rem 1rem 1rem;
+    padding: 2.5rem 1rem 1.2rem;
     text-align: center;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease 0.3s;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
 }
 
-.gallery-item:hover .gallery-caption {
+.gallery-item.opened .gallery-caption {
+    opacity: 1;
     transform: translateY(0);
 }
 
-.caption-emoji {
-    font-size: 1.8rem;
-}
-
 .caption-text {
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.4;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.3px;
 }
 
 /* ============ VIDEO SECTION ============ */
