@@ -1,0 +1,13 @@
+{
+  "name": "ana-maria-rock",
+  "version": "1.0.0",
+  "description": "Site de prezentare cu jurnal interactiv - powered by Convex",
+  "private": true,
+  "scripts": {
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy"
+  },
+  "dependencies": {
+    "convex": "^1.17.0"
+  }
+}

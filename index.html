@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pentru Ana Maria - Momentele Noastre 💕</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="journal.css">
 </head>
 <body>
     <!-- Background -->
@@ -26,6 +27,7 @@
                 <li><a href="#gallery" class="nav-link">Galerie</a></li>
                 <li><a href="#video" class="nav-link">Video</a></li>
                 <li><a href="#message" class="nav-link">Mesaj</a></li>
+                <li><a href="#journal" class="nav-link">Jurnal</a></li>
             </ul>
         </div>
     </nav>
@@ -283,6 +285,49 @@
         </div>
     </section>
 
+    <!-- Journal Section -->
+    <section id="journal" class="journal-section">
+        <h2 class="section-title">Jurnalul Nostru 📖</h2>
+        <p class="section-subtitle">Un loc unde putem aduna gânduri, poze și momente speciale</p>
+
+        <!-- Form to add new entry -->
+        <div class="journal-form-container">
+            <form id="journal-form" class="journal-form">
+                <div class="form-group">
+                    <label for="journal-author">Numele tău</label>
+                    <input type="text" id="journal-author" placeholder="Cum te cheamă?" required>
+                </div>
+                <div class="form-group">
+                    <label for="journal-content">Gândurile tale</label>
+                    <textarea id="journal-content" placeholder="Scrie ce simți, ce vrei să împărtășești..." rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Adaugă poze sau clipuri</label>
+                    <div class="file-upload-area" id="file-upload-area">
+                        <input type="file" id="journal-files" multiple accept="image/*,video/*" class="file-input">
+                        <div class="file-upload-label">
+                            <span class="upload-icon">📎</span>
+                            <span>Trage fișiere aici sau click pentru a selecta</span>
+                        </div>
+                    </div>
+                    <div id="file-preview" class="file-preview"></div>
+                </div>
+                <button type="submit" class="journal-submit-btn">Trimite 💌</button>
+            </form>
+        </div>
+
+        <!-- Entries display -->
+        <div id="journal-entries" class="journal-entries">
+            <p class="journal-loading">Se încarcă jurnalul... ✨</p>
+        </div>
+
+        <!-- Lightbox -->
+        <div id="journal-lightbox" class="journal-lightbox" onclick="closeJournalLightbox()">
+            <span class="lightbox-close">&times;</span>
+            <img id="lightbox-image" src="" alt="Imagine mărită">
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -291,5 +336,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="journal.js"></script>
 </body>
 </html>
