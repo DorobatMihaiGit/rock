@@ -6,7 +6,7 @@
 // Exemplu: "https://happy-animal-123.convex.cloud"
 // ============================================================
 
-const CONVEX_URL = ""; // <-- PUNE URL-UL TĂU CONVEX AICI
+const CONVEX_URL = "https://dependable-chameleon-510.convex.cloud"; // Convex deployment URL
 
 // ============ CONVEX API HELPERS ============
 
