@@ -144,7 +144,7 @@
     width: 70%;
     text-align: center;
     color: #4a3728;
-    font-size: 1rem;
+    font-size: 1.25rem;
     line-height: 1.7;
     font-weight: 500;
     word-break: break-word;
@@ -203,8 +203,47 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.placed-sticker:hover .remove-sticker {
+.placed-sticker:hover .remove-sticker,
+.placed-sticker:hover .resize-sticker-btn {
     display: flex;
+}
+
+/* Sticker resize buttons */
+.sticker-controls {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 4px;
+    z-index: 40;
+}
+
+.placed-sticker:hover .sticker-controls {
+    display: flex;
+}
+
+.resize-sticker-btn {
+    width: 20px;
+    height: 20px;
+    background: var(--secondary-color);
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    transition: transform 0.15s ease;
+}
+
+.resize-sticker-btn:hover {
+    transform: scale(1.2);
 }
 
 /* ============ STICKER PICKER ============ */
@@ -543,7 +582,7 @@
     width: 70%;
     text-align: center;
     color: #4a3728;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     line-height: 1.7;
     font-weight: 500;
     word-break: break-word;
@@ -674,7 +713,7 @@
     }
 
     .preview-text {
-        font-size: 0.85rem;
+        font-size: 1.05rem;
         width: 80%;
     }
 
@@ -742,7 +781,7 @@
     }
 
     .preview-text {
-        font-size: 0.7rem;
+        font-size: 0.9rem;
         width: 85%;
     }
 
@@ -777,7 +816,7 @@
     }
 
     .entry-paper-text {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
     }
 
     .entry-sticker {
@@ -797,5 +836,32 @@
         font-size: 1rem;
         padding: 0.85rem;
         border-radius: 40px;
+    }
+}
+
+/* Touch devices: always show sticker controls (no hover) */
+@media (hover: none) and (pointer: coarse) {
+    .placed-sticker .remove-sticker,
+    .placed-sticker .sticker-controls {
+        display: flex;
+    }
+
+    .placed-sticker .remove-sticker {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+        top: -8px;
+        right: -8px;
+    }
+
+    .resize-sticker-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 15px;
+    }
+
+    .sticker-controls {
+        bottom: -10px;
+        gap: 6px;
     }
 }

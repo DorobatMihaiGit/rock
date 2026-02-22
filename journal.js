@@ -185,7 +185,11 @@ function addStickerToPreview(stickerName) {
     stickerEl.style.top = `${y}%`;
     stickerEl.innerHTML = `
         <img src="stickers/${encodeURIComponent(stickerName)}" alt="sticker" draggable="false">
-        <button class="remove-sticker" onclick="removeSticker('${stickerId}')" title="Șterge sticker">×</button>
+        <button type="button" class="remove-sticker" onclick="event.stopPropagation(); removeSticker('${stickerId}')" title="Șterge sticker">×</button>
+        <div class="sticker-controls">
+            <button type="button" class="resize-sticker-btn" onclick="event.stopPropagation(); resizeSticker('${stickerId}', -1)" title="Micșorează">−</button>
+            <button type="button" class="resize-sticker-btn" onclick="event.stopPropagation(); resizeSticker('${stickerId}', 1)" title="Mărește">+</button>
+        </div>
     `;
 
     preview.appendChild(stickerEl);
@@ -200,6 +204,21 @@ function removeSticker(stickerId) {
     const el = document.getElementById(stickerId);
     if (el) el.remove();
     placedStickers = placedStickers.filter(s => s.id !== stickerId);
+}
+
+function resizeSticker(stickerId, direction) {
+    const el = document.getElementById(stickerId);
+    const sticker = placedStickers.find(s => s.id === stickerId);
+    if (!el || !sticker) return;
+
+    const step = 0.15;
+    const minScale = 0.4;
+    const maxScale = 2.5;
+    const newScale = Math.max(minScale, Math.min(maxScale, (sticker.scale || 1) + direction * step));
+
+    sticker.scale = newScale;
+    el.style.width = `${70 * newScale}px`;
+    el.style.height = `${70 * newScale}px`;
 }
 
 function clearAllStickers() {
@@ -225,9 +244,32 @@ function makeDraggable(stickerEl, container) {
     let isDragging = false;
     let startX, startY, initialLeft, initialTop;
 
+    // Pinch-to-zoom state
+    let isPinching = false;
+    let initialPinchDist = null;
+    let initialPinchScale = 1;
+
+    function getTouchDist(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     const onPointerDown = (e) => {
-        if (e.target.classList.contains("remove-sticker")) return;
+        if (e.target.classList.contains("remove-sticker") || e.target.classList.contains("resize-sticker-btn")) return;
         e.preventDefault();
+
+        // Pinch start (2 fingers)
+        if (e.touches && e.touches.length === 2) {
+            isPinching = true;
+            isDragging = false;
+            initialPinchDist = getTouchDist(e.touches);
+            const sticker = placedStickers.find(s => s.id === stickerEl.id);
+            initialPinchScale = sticker ? (sticker.scale || 1) : 1;
+            stickerEl.classList.add("dragging");
+            return;
+        }
+
         isDragging = true;
         stickerEl.classList.add("dragging");
 
@@ -239,6 +281,23 @@ function makeDraggable(stickerEl, container) {
     };
 
     const onPointerMove = (e) => {
+        // Pinch zoom
+        if (isPinching && e.touches && e.touches.length === 2) {
+            e.preventDefault();
+            const currentDist = getTouchDist(e.touches);
+            const ratio = currentDist / initialPinchDist;
+            const minScale = 0.4;
+            const maxScale = 2.5;
+            const newScale = Math.max(minScale, Math.min(maxScale, initialPinchScale * ratio));
+
+            const sticker = placedStickers.find(s => s.id === stickerEl.id);
+            if (sticker) sticker.scale = newScale;
+
+            stickerEl.style.width = `${70 * newScale}px`;
+            stickerEl.style.height = `${70 * newScale}px`;
+            return;
+        }
+
         if (!isDragging) return;
         e.preventDefault();
 
@@ -256,7 +315,16 @@ function makeDraggable(stickerEl, container) {
         stickerEl.style.top = `${newTop}%`;
     };
 
-    const onPointerUp = () => {
+    const onPointerUp = (e) => {
+        if (isPinching) {
+            // End pinch only when fewer than 2 fingers remain
+            if (!e.touches || e.touches.length < 2) {
+                isPinching = false;
+                initialPinchDist = null;
+                stickerEl.classList.remove("dragging");
+            }
+            return;
+        }
         if (!isDragging) return;
         isDragging = false;
         stickerEl.classList.remove("dragging");
@@ -277,8 +345,8 @@ function makeDraggable(stickerEl, container) {
 
     // Touch events
     stickerEl.addEventListener("touchstart", onPointerDown, { passive: false });
-    document.addEventListener("touchmove", onPointerMove, { passive: false });
-    document.addEventListener("touchend", onPointerUp);
+    stickerEl.addEventListener("touchmove", onPointerMove, { passive: false });
+    stickerEl.addEventListener("touchend", onPointerUp, { passive: false });
 }
 
 // ============ GET STICKER DATA FOR SUBMIT ============
@@ -349,6 +417,7 @@ function setupJournalForm() {
             document.getElementById("scrapbook-area").style.display = "none";
 
             showNotification("Gândurile tale au fost adăugate! 💕", "success");
+            lastEntriesJSON = null; // Force re-render on next load
             await loadJournalEntries();
         } catch (err) {
             console.error("Error adding entry:", err);
@@ -397,14 +466,22 @@ function showNotification(message, type = "success") {
 
 // ============ LOAD & RENDER ENTRIES ============
 
+let lastEntriesJSON = null;
+
 async function loadJournalEntries() {
     try {
         const entries = await convexQuery("journal:getEntries");
+        const entriesJSON = JSON.stringify(entries);
+
+        // Only re-render if data actually changed (prevents flicker)
+        if (entriesJSON === lastEntriesJSON) return;
+        lastEntriesJSON = entriesJSON;
+
         renderJournalEntries(entries);
     } catch (err) {
         console.error("Error loading entries:", err);
         const container = document.getElementById("journal-entries");
-        if (container) {
+        if (container && !lastEntriesJSON) {
             container.innerHTML =
                 '<p class="journal-empty">Nu s-au putut încărca intrările. Verifică conexiunea. 🔄</p>';
         }
@@ -452,7 +529,11 @@ function renderJournalEntries(entries) {
             let scrapbookHtml = "";
             if (entry.textPaper) {
                 const stickersHtml = (entry.stickers || [])
-                    .map(s => `<img src="stickers/${encodeURIComponent(s.name)}" class="entry-sticker" style="left:${s.x}%;top:${s.y}%" alt="sticker">`)
+                    .map(s => {
+                        const scale = s.scale || 1;
+                        const size = Math.round(60 * scale);
+                        return `<img src="stickers/${encodeURIComponent(s.name)}" class="entry-sticker" style="left:${s.x}%;top:${s.y}%;width:${size}px;height:${size}px" alt="sticker">`;
+                    })
                     .join("");
 
                 scrapbookHtml = `
