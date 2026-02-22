@@ -11,6 +11,17 @@ export default defineSchema({
         type: v.union(v.literal("image"), v.literal("video")),
       })
     ),
+    textPaper: v.optional(v.string()),
+    stickers: v.optional(
+      v.array(
+        v.object({
+          name: v.string(),
+          x: v.number(),
+          y: v.number(),
+          scale: v.number(),
+        })
+      )
+    ),
     createdAt: v.number(),
   }).index("by_creation", ["createdAt"]),
 });

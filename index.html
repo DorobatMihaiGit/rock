@@ -27,7 +27,6 @@
                 <li><a href="#gallery" class="nav-link">Galerie</a></li>
                 <li><a href="#video" class="nav-link">Video</a></li>
                 <li><a href="#message" class="nav-link">Mesaj</a></li>
-                <li><a href="#journal" class="nav-link">Jurnal</a></li>
             </ul>
         </div>
     </nav>
@@ -37,7 +36,10 @@
         <div class="hero-content">
             <h1 class="hero-title">Pentru Tine, Ana Maria</h1>
             <p class="hero-subtitle">Rock și momentele noastre speciale - amintiri care ne definesc</p>
-            <button class="btn-start" onclick="smoothScroll('about')">Descoperă</button>
+            <div class="hero-buttons">
+                <button class="btn-start" onclick="smoothScroll('about')">Descoperă</button>
+                <button class="btn-journal" onclick="smoothScroll('journal')">Jurnalul Nostru</button>
+            </div>
         </div>
     </section>
 
@@ -288,11 +290,12 @@
     <!-- Journal Section -->
     <section id="journal" class="journal-section">
         <h2 class="section-title">Jurnalul Nostru 📖</h2>
-        <p class="section-subtitle">Un loc unde putem aduna gânduri, poze și momente speciale</p>
+        <p class="section-subtitle">Un loc unde putem aduna gânduri, poze și momente speciale într-un scrapbook</p>
 
         <!-- Form to add new entry -->
         <div class="journal-form-container">
             <form id="journal-form" class="journal-form">
+                <!-- Step 1: Name & Content -->
                 <div class="form-group">
                     <label for="journal-author">Numele tău</label>
                     <input type="text" id="journal-author" placeholder="Cum te cheamă?" required>
@@ -301,8 +304,150 @@
                     <label for="journal-content">Gândurile tale</label>
                     <textarea id="journal-content" placeholder="Scrie ce simți, ce vrei să împărtășești..." rows="4" required></textarea>
                 </div>
+
+                <!-- Step 2: Text Paper Picker -->
                 <div class="form-group">
-                    <label>Adaugă poze sau clipuri</label>
+                    <label>Alege un text paper 📜</label>
+                    <div class="text-paper-picker" id="text-paper-picker">
+                        <div class="paper-option" data-paper="text paper1.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper1.png" alt="Paper 1">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 2.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%202.png" alt="Paper 2">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 3.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%203.png" alt="Paper 3">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 4.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%204.png" alt="Paper 4">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 5.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%205.png" alt="Paper 5">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 6.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%206.png" alt="Paper 6">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 7.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%207.png" alt="Paper 7">
+                        </div>
+                        <div class="paper-option" data-paper="text paper 8.png" onclick="selectTextPaper(this)">
+                            <img src="text%20papers/text%20paper%208.png" alt="Paper 8">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Scrapbook Preview with Stickers -->
+                <div class="form-group" id="scrapbook-area" style="display:none;">
+                    <label>Preview & Adaugă stickere ✨</label>
+                    <div class="scrapbook-preview" id="scrapbook-preview">
+                        <img id="preview-paper-bg" class="preview-paper-bg" src="" alt="">
+                        <p id="preview-text" class="preview-text"></p>
+                    </div>
+
+                    <!-- Sticker Category Tabs -->
+                    <div class="sticker-picker" id="sticker-picker">
+                        <div class="sticker-tabs">
+                            <button type="button" class="sticker-tab active" onclick="switchStickerTab('cute')">Cute</button>
+                            <button type="button" class="sticker-tab" onclick="switchStickerTab('flowers')">Flowers</button>
+                            <button type="button" class="sticker-tab" onclick="switchStickerTab('travel')">Travel</button>
+                        </div>
+
+                        <!-- Cute Stickers -->
+                        <div class="sticker-category active" id="sticker-cat-cute">
+                            <div class="sticker-option" onclick="addStickerToPreview('-51 1.png')">
+                                <img src="stickers/-51%201.png" alt="Cute 1">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('-51 2.png')">
+                                <img src="stickers/-51%202.png" alt="Cute 2">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('-51 3.png')">
+                                <img src="stickers/-51%203.png" alt="Cute 3">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('-51 4.png')">
+                                <img src="stickers/-51%204.png" alt="Cute 4">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('17.png')">
+                                <img src="stickers/17.png" alt="Cute 5">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('40.png')">
+                                <img src="stickers/40.png" alt="Cute 6">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('41.png')">
+                                <img src="stickers/41.png" alt="Cute 7">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('Group 38.png')">
+                                <img src="stickers/Group%2038.png" alt="Cute 8">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('stickers 4.png')">
+                                <img src="stickers/stickers%204.png" alt="Cute 9">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('stickers 4 (1).png')">
+                                <img src="stickers/stickers%204%20(1).png" alt="Cute 10">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('dream.png')">
+                                <img src="stickers/dream.png" alt="Dream">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('made with love.png')">
+                                <img src="stickers/made%20with%20love.png" alt="Made with love">
+                            </div>
+                        </div>
+
+                        <!-- Flowers Stickers -->
+                        <div class="sticker-category" id="sticker-cat-flowers">
+                            <div class="sticker-option" onclick="addStickerToPreview('big pink.png')">
+                                <img src="stickers/big%20pink.png" alt="Big Pink">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('bouquet.png')">
+                                <img src="stickers/bouquet.png" alt="Bouquet">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('brown.png')">
+                                <img src="stickers/brown.png" alt="Brown">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('drawing flower.png')">
+                                <img src="stickers/drawing%20flower.png" alt="Drawing Flower">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('dry pink.png')">
+                                <img src="stickers/dry%20pink.png" alt="Dry Pink">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('green.png')">
+                                <img src="stickers/green.png" alt="Green">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('pink blooms.png')">
+                                <img src="stickers/pink%20blooms.png" alt="Pink Blooms">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('red flower.png')">
+                                <img src="stickers/red%20flower.png" alt="Red Flower">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('sunflower.png')">
+                                <img src="stickers/sunflower.png" alt="Sunflower">
+                            </div>
+                        </div>
+
+                        <!-- Travel Stickers -->
+                        <div class="sticker-category" id="sticker-cat-travel">
+                            <div class="sticker-option" onclick="addStickerToPreview('car.png')">
+                                <img src="stickers/car.png" alt="Car">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('stamp.png')">
+                                <img src="stickers/stamp.png" alt="Stamp">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('i told sunset.png')">
+                                <img src="stickers/i%20told%20sunset.png" alt="Sunset">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('moment captured.png')">
+                                <img src="stickers/moment%20captured.png" alt="Moment Captured">
+                            </div>
+                            <div class="sticker-option" onclick="addStickerToPreview('vintage.png')">
+                                <img src="stickers/vintage.png" alt="Vintage">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="clear-stickers-btn" onclick="clearAllStickers()">Șterge stickerele</button>
+                </div>
+
+                <!-- Step 4: File Upload -->
+                <div class="form-group">
+                    <label>Adaugă poze sau clipuri (opțional)</label>
                     <div class="file-upload-area" id="file-upload-area">
                         <input type="file" id="journal-files" multiple accept="image/*,video/*" class="file-input">
                         <div class="file-upload-label">
@@ -312,7 +457,8 @@
                     </div>
                     <div id="file-preview" class="file-preview"></div>
                 </div>
-                <button type="submit" class="journal-submit-btn">Trimite 💌</button>
+
+                <button type="submit" class="journal-submit-btn">Trimite</button>
             </form>
         </div>
 

@@ -39,12 +39,25 @@ export const addEntry = mutation({
         type: v.union(v.literal("image"), v.literal("video")),
       })
     ),
+    textPaper: v.optional(v.string()),
+    stickers: v.optional(
+      v.array(
+        v.object({
+          name: v.string(),
+          x: v.number(),
+          y: v.number(),
+          scale: v.number(),
+        })
+      )
+    ),
   },
   handler: async (ctx, args) => {
     await ctx.db.insert("journalEntries", {
       author: args.author,
       content: args.content,
       media: args.media,
+      textPaper: args.textPaper,
+      stickers: args.stickers,
       createdAt: Date.now(),
     });
   },

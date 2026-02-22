@@ -1,12 +1,8 @@
 // ============================================================
-// JURNAL - Powered by Convex
-// ============================================================
-// SETUP: După ce rulezi `npx convex init` și `npx convex dev`,
-// copiază URL-ul deployment-ului tău mai jos.
-// Exemplu: "https://happy-animal-123.convex.cloud"
+// JURNAL SCRAPBOOK - Powered by Convex
 // ============================================================
 
-const CONVEX_URL = "https://dependable-chameleon-510.convex.cloud"; // Convex deployment URL
+const CONVEX_URL = "https://dependable-chameleon-510.convex.cloud";
 
 // ============ CONVEX API HELPERS ============
 
@@ -39,21 +35,15 @@ async function convexMutation(functionPath, args = {}) {
 // ============ FILE UPLOAD ============
 
 async function uploadFileToConvex(file) {
-    // 1. Get presigned upload URL
     const uploadUrl = await convexMutation("journal:generateUploadUrl");
-
-    // 2. Upload file to Convex storage
     const res = await fetch(uploadUrl, {
         method: "POST",
         headers: { "Content-Type": file.type },
         body: file,
     });
-
     if (!res.ok) throw new Error("Upload failed");
-
     const { storageId } = await res.json();
     const type = file.type.startsWith("video/") ? "video" : "image";
-
     return { storageId, type };
 }
 
@@ -79,16 +69,13 @@ function setupFilePreview() {
         renderFilePreview();
     });
 
-    // Drag & drop visual feedback
     uploadArea.addEventListener("dragover", (e) => {
         e.preventDefault();
         uploadArea.classList.add("dragover");
     });
-
     uploadArea.addEventListener("dragleave", () => {
         uploadArea.classList.remove("dragover");
     });
-
     uploadArea.addEventListener("drop", () => {
         uploadArea.classList.remove("dragover");
     });
@@ -97,17 +84,12 @@ function setupFilePreview() {
 function renderFilePreview() {
     const container = document.getElementById("file-preview");
     if (!container) return;
-
-    if (selectedFiles.length === 0) {
-        container.innerHTML = "";
-        return;
-    }
+    if (selectedFiles.length === 0) { container.innerHTML = ""; return; }
 
     container.innerHTML = selectedFiles
         .map((file, index) => {
             const url = URL.createObjectURL(file);
             const isVideo = file.type.startsWith("video/");
-
             return `
             <div class="file-preview-item" data-index="${index}">
                 ${isVideo
@@ -115,21 +97,199 @@ function renderFilePreview() {
                     : `<img src="${url}" alt="preview">`
                 }
                 <button class="remove-file" onclick="removeFile(${index})" title="Șterge">×</button>
-            </div>
-        `;
-        })
-        .join("");
+            </div>`;
+        }).join("");
 }
 
 function removeFile(index) {
     selectedFiles.splice(index, 1);
-
-    // Rebuild the file input (can't modify FileList directly)
     const dt = new DataTransfer();
     selectedFiles.forEach((f) => dt.items.add(f));
     document.getElementById("journal-files").files = dt.files;
-
     renderFilePreview();
+}
+
+// ============ TEXT PAPER SELECTION ============
+
+let selectedTextPaper = null;
+
+function selectTextPaper(el) {
+    // Toggle selection
+    const allOptions = document.querySelectorAll(".paper-option");
+    const wasSelected = el.classList.contains("selected");
+
+    allOptions.forEach(opt => opt.classList.remove("selected"));
+
+    if (wasSelected) {
+        selectedTextPaper = null;
+        document.getElementById("scrapbook-area").style.display = "none";
+    } else {
+        el.classList.add("selected");
+        selectedTextPaper = el.getAttribute("data-paper");
+        showScrapbookPreview();
+    }
+}
+
+function showScrapbookPreview() {
+    const area = document.getElementById("scrapbook-area");
+    const bgImg = document.getElementById("preview-paper-bg");
+    const previewText = document.getElementById("preview-text");
+
+    area.style.display = "block";
+    bgImg.src = `text%20papers/${encodeURIComponent(selectedTextPaper).replace(/%20/g, '%20')}`;
+
+    // Sync text content to preview
+    const content = document.getElementById("journal-content").value || "Textul tău va apărea aici...";
+    previewText.textContent = content;
+
+    // Clear old stickers from preview
+    clearAllStickers();
+}
+
+// Live-sync text content to preview
+function setupLivePreview() {
+    const textarea = document.getElementById("journal-content");
+    if (!textarea) return;
+
+    textarea.addEventListener("input", () => {
+        const previewText = document.getElementById("preview-text");
+        if (previewText && selectedTextPaper) {
+            previewText.textContent = textarea.value || "Textul tău va apărea aici...";
+        }
+    });
+}
+
+// ============ STICKER SYSTEM ============
+
+let placedStickers = [];
+let stickerIdCounter = 0;
+
+function addStickerToPreview(stickerName) {
+    if (!selectedTextPaper) {
+        showNotification("Alege mai întâi un text paper!", "error");
+        return;
+    }
+
+    const preview = document.getElementById("scrapbook-preview");
+    const stickerId = `sticker-${stickerIdCounter++}`;
+
+    // Random initial position (center area)
+    const x = 50 + (Math.random() - 0.5) * 40;
+    const y = 50 + (Math.random() - 0.5) * 40;
+
+    const stickerEl = document.createElement("div");
+    stickerEl.className = "placed-sticker";
+    stickerEl.id = stickerId;
+    stickerEl.setAttribute("data-sticker", stickerName);
+    stickerEl.style.left = `${x}%`;
+    stickerEl.style.top = `${y}%`;
+    stickerEl.innerHTML = `
+        <img src="stickers/${encodeURIComponent(stickerName)}" alt="sticker" draggable="false">
+        <button class="remove-sticker" onclick="removeSticker('${stickerId}')" title="Șterge sticker">×</button>
+    `;
+
+    preview.appendChild(stickerEl);
+
+    // Make draggable
+    makeDraggable(stickerEl, preview);
+
+    placedStickers.push({ id: stickerId, name: stickerName, x, y, scale: 1 });
+}
+
+function removeSticker(stickerId) {
+    const el = document.getElementById(stickerId);
+    if (el) el.remove();
+    placedStickers = placedStickers.filter(s => s.id !== stickerId);
+}
+
+function clearAllStickers() {
+    const preview = document.getElementById("scrapbook-preview");
+    if (!preview) return;
+    preview.querySelectorAll(".placed-sticker").forEach(el => el.remove());
+    placedStickers = [];
+}
+
+// ============ STICKER CATEGORY TABS ============
+
+function switchStickerTab(category) {
+    // Update tab buttons
+    document.querySelectorAll(".sticker-tab").forEach(tab => tab.classList.remove("active"));
+    document.querySelector(`.sticker-tab[onclick*="'${category}'"]`).classList.add("active");
+
+    // Show matching category, hide others
+    document.querySelectorAll(".sticker-category").forEach(cat => cat.classList.remove("active"));
+    document.getElementById(`sticker-cat-${category}`).classList.add("active");
+}
+
+function makeDraggable(stickerEl, container) {
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    const onPointerDown = (e) => {
+        if (e.target.classList.contains("remove-sticker")) return;
+        e.preventDefault();
+        isDragging = true;
+        stickerEl.classList.add("dragging");
+
+        const rect = container.getBoundingClientRect();
+        startX = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
+        startY = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+        initialLeft = parseFloat(stickerEl.style.left);
+        initialTop = parseFloat(stickerEl.style.top);
+    };
+
+    const onPointerMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const rect = container.getBoundingClientRect();
+        const currentX = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
+        const currentY = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+
+        const deltaXPercent = ((currentX - startX) / rect.width) * 100;
+        const deltaYPercent = ((currentY - startY) / rect.height) * 100;
+
+        const newLeft = Math.max(0, Math.min(90, initialLeft + deltaXPercent));
+        const newTop = Math.max(0, Math.min(90, initialTop + deltaYPercent));
+
+        stickerEl.style.left = `${newLeft}%`;
+        stickerEl.style.top = `${newTop}%`;
+    };
+
+    const onPointerUp = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        stickerEl.classList.remove("dragging");
+
+        // Update sticker position in placedStickers array
+        const id = stickerEl.id;
+        const sticker = placedStickers.find(s => s.id === id);
+        if (sticker) {
+            sticker.x = parseFloat(stickerEl.style.left);
+            sticker.y = parseFloat(stickerEl.style.top);
+        }
+    };
+
+    // Mouse events
+    stickerEl.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("mousemove", onPointerMove);
+    document.addEventListener("mouseup", onPointerUp);
+
+    // Touch events
+    stickerEl.addEventListener("touchstart", onPointerDown, { passive: false });
+    document.addEventListener("touchmove", onPointerMove, { passive: false });
+    document.addEventListener("touchend", onPointerUp);
+}
+
+// ============ GET STICKER DATA FOR SUBMIT ============
+
+function getStickersData() {
+    return placedStickers.map(s => ({
+        name: s.name,
+        x: s.x,
+        y: s.y,
+        scale: s.scale || 1,
+    }));
 }
 
 // ============ FORM SUBMIT ============
@@ -166,18 +326,29 @@ function setupJournalForm() {
                 }
             }
 
-            // Add entry
-            submitBtn.textContent = "Se salvează...";
-            await convexMutation("journal:addEntry", { author, content, media });
+            // Build mutation args
+            const mutationArgs = { author, content, media };
+            if (selectedTextPaper) {
+                mutationArgs.textPaper = selectedTextPaper;
+            }
+            const stickersData = getStickersData();
+            if (stickersData.length > 0) {
+                mutationArgs.stickers = stickersData;
+            }
 
-            // Reset
+            submitBtn.textContent = "Se salvează...";
+            await convexMutation("journal:addEntry", mutationArgs);
+
+            // Reset everything
             form.reset();
             selectedFiles = [];
             renderFilePreview();
+            selectedTextPaper = null;
+            placedStickers = [];
+            document.querySelectorAll(".paper-option").forEach(o => o.classList.remove("selected"));
+            document.getElementById("scrapbook-area").style.display = "none";
 
             showNotification("Gândurile tale au fost adăugate! 💕", "success");
-
-            // Reload entries
             await loadJournalEntries();
         } catch (err) {
             console.error("Error adding entry:", err);
@@ -192,7 +363,6 @@ function setupJournalForm() {
 // ============ NOTIFICATION ============
 
 function showNotification(message, type = "success") {
-    // Remove existing notification
     const existing = document.querySelector(".journal-notification");
     if (existing) existing.remove();
 
@@ -278,13 +448,31 @@ function renderJournalEntries(entries) {
                 </div>`
                     : "";
 
+            // Scrapbook note with text paper + stickers
+            let scrapbookHtml = "";
+            if (entry.textPaper) {
+                const stickersHtml = (entry.stickers || [])
+                    .map(s => `<img src="stickers/${encodeURIComponent(s.name)}" class="entry-sticker" style="left:${s.x}%;top:${s.y}%" alt="sticker">`)
+                    .join("");
+
+                scrapbookHtml = `
+                <div class="entry-scrapbook-note">
+                    <img src="text%20papers/${encodeURIComponent(entry.textPaper)}" class="entry-paper-bg" alt="text paper">
+                    <p class="entry-paper-text">${escapeHtml(entry.content)}</p>
+                    ${stickersHtml}
+                </div>`;
+            }
+
             return `
-            <div class="journal-entry">
+            <div class="journal-entry ${entry.textPaper ? 'has-scrapbook' : ''}">
                 <div class="entry-header">
                     <span class="entry-author">✍️ ${escapeHtml(entry.author)}</span>
                     <span class="entry-date">${date}</span>
                 </div>
-                <p class="entry-content">${escapeHtml(entry.content)}</p>
+                ${scrapbookHtml
+                    ? scrapbookHtml
+                    : `<p class="entry-content">${escapeHtml(entry.content)}</p>`
+                }
                 ${mediaHtml}
             </div>
         `;
@@ -310,7 +498,6 @@ function closeJournalLightbox() {
     document.body.style.overflow = "";
 }
 
-// Close lightbox with Escape key
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeJournalLightbox();
 });
@@ -330,15 +517,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         }
-        // Still setup form UI features
         setupFilePreview();
         return;
     }
 
     setupFilePreview();
     setupJournalForm();
+    setupLivePreview();
     loadJournalEntries();
 
-    // Auto-refresh entries every 30 seconds
     setInterval(loadJournalEntries, 30000);
 });
